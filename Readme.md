@@ -36,3 +36,10 @@ The Parity bit's coverage set as well as the parity bit itself are XOR'd togethe
 
 Putting all these bits together gives the syndrome. If the syndrome is all 0s, the check found no error. Otherwise, the syndrome identifies the position of the single flipped bit.
 
+## How I validated the code
+I use `iverilog` and `vvp` to run and validate the code using the testbench.
+```
+iverilog -g2012  testbench/ham_tb.v src/main.v && vvp a.out
+```
+
+The XDC is untested as of yet, will run it on an FPGA when I get a chance.
