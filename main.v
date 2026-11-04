@@ -3,7 +3,7 @@
 module hamming1511 (
     input wire [14:0] input_bits,
     output wire [15:0] led,
-    output wire is_error // TODO - can this be moved inside the module
+    output wire is_error
 );
     wire [3:0] syndrome;
     
@@ -19,7 +19,4 @@ module hamming1511 (
     // Error position - Take the syndrome bits and dump them into a 1 hot 16 bit value
     // if the syndrome is 0, set all 16 bits to 0, otherwise
     assign led = (syndrome == 4'b0) ? 16'b0 : 16'b1 << syndrome; // Create a 16 bit value to store the number 1. Then left shift that bit "syndrome number of times"
-
-    // Set bit 16 to whether or not there's an error
-    // assign led[15] = is_error;
 endmodule

@@ -1,0 +1,330 @@
+#! /opt/homebrew/Cellar/icarus-verilog/13.0/bin/vvp
+:ivl_version "13.0 (stable)" "(v13_0)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/va_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/13.0/lib/ivl/v2009.vpi";
+S_0x102da82b0 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x102da8430 .scope module, "hamming1511_tb" "hamming1511_tb" 3 1;
+ .timescale 0 0;
+v0x748b01dea0_0 .var "input_bits", 14 0;
+v0x748b01df40_0 .net "is_error", 0 0, L_0x748b01e120;  1 drivers
+v0x748b01dfe0_0 .net "led", 15 0, L_0x748b01e1c0;  1 drivers
+S_0x102dad710 .scope task, "check_case" "check_case" 3 11, 3 11 0, S_0x102da8430;
+ .timescale 0 0;
+v0x102dad890_0 .var "candidate", 14 0;
+v0x102dad930_0 .var/i "case_number", 31 0;
+v0x102db4f00_0 .var "expected_led", 15 0;
+v0x102db4fa0_0 .var "expected_syndrome", 3 0;
+TD_hamming1511_tb.check_case ;
+    %load/vec4 v0x102dad890_0;
+    %store/vec4 v0x748b01dea0_0, 0, 15;
+    %load/vec4 v0x102db4fa0_0;
+    %cmpi/e 0, 0, 4;
+    %flag_mov 8, 4;
+    %jmp/0 T_0.0, 8;
+    %pushi/vec4 0, 0, 16;
+    %jmp/1 T_0.1, 8;
+T_0.0 ; End of true expr.
+    %pushi/vec4 1, 0, 16;
+    %ix/getv 4, v0x102db4fa0_0;
+    %shiftl 4;
+    %jmp/0 T_0.1, 8;
+ ; End of false expr.
+    %blend;
+T_0.1;
+    %store/vec4 v0x102db4f00_0, 0, 16;
+    %delay 2, 0;
+    %load/vec4 v0x748b01de00_0;
+    %load/vec4 v0x102db4fa0_0;
+    %cmp/ne;
+    %jmp/0xz  T_0.2, 6;
+    %vpi_call/w 3 23 "$fatal", 32'sb00000000000000000000000000000001, "Case %0d: input=%b syndrome=%b expected=%b", v0x102dad930_0, v0x102dad890_0, v0x748b01de00_0, v0x102db4fa0_0 {0 0 0};
+T_0.2 ;
+    %load/vec4 v0x748b01df40_0;
+    %load/vec4 v0x102db4fa0_0;
+    %pushi/vec4 0, 0, 4;
+    %cmp/ne;
+    %flag_get/vec4 4;
+    %cmp/ne;
+    %jmp/0xz  T_0.4, 6;
+    %vpi_call/w 3 26 "$fatal", 32'sb00000000000000000000000000000001, "Case %0d: input=%b is_error=%b", v0x102dad930_0, v0x102dad890_0, v0x748b01df40_0 {0 0 0};
+T_0.4 ;
+    %load/vec4 v0x748b01dfe0_0;
+    %load/vec4 v0x102db4f00_0;
+    %cmp/ne;
+    %jmp/0xz  T_0.6, 6;
+    %vpi_call/w 3 29 "$fatal", 32'sb00000000000000000000000000000001, "Case %0d: input=%b led=%b expected=%b", v0x102dad930_0, v0x102dad890_0, v0x748b01dfe0_0, v0x102db4f00_0 {0 0 0};
+T_0.6 ;
+    %end;
+S_0x102db5040 .scope module, "dut" "hamming1511" 3 8, 4 3 0, S_0x102da8430;
+ .timescale 0 0;
+    .port_info 0 /INPUT 15 "input_bits";
+    .port_info 1 /OUTPUT 16 "led";
+    .port_info 2 /OUTPUT 1 "is_error";
+L_0x102da85b0/0/0 .functor XOR 1, L_0x748ac310e0, L_0x748ac31180, L_0x748ac31220, L_0x748ac312c0;
+L_0x102da85b0/0/4 .functor XOR 1, L_0x748ac31360, L_0x748ac31400, L_0x748ac314a0, L_0x748ac31540;
+L_0x102da85b0 .functor XOR 1, L_0x102da85b0/0/0, L_0x102da85b0/0/4, C4<0>, C4<0>;
+L_0x102db5210/0/0 .functor XOR 1, L_0x748ac315e0, L_0x748ac31680, L_0x748ac31720, L_0x748ac317c0;
+L_0x102db5210/0/4 .functor XOR 1, L_0x748ac31860, L_0x748ac31900, L_0x748ac319a0, L_0x748ac31a40;
+L_0x102db5210 .functor XOR 1, L_0x102db5210/0/0, L_0x102db5210/0/4, C4<0>, C4<0>;
+L_0x102db5610/0/0 .functor XOR 1, L_0x748ac31ae0, L_0x748ac31b80, L_0x748ac31c20, L_0x748ac31cc0;
+L_0x102db5610/0/4 .functor XOR 1, L_0x748ac31d60, L_0x748ac31e00, L_0x748ac31ea0, L_0x748ac31f40;
+L_0x102db5610 .functor XOR 1, L_0x102db5610/0/0, L_0x102db5610/0/4, C4<0>, C4<0>;
+L_0x102db5510/0/0 .functor XOR 1, L_0x748ac31fe0, L_0x748ac32080, L_0x748ac32120, L_0x748ac321c0;
+L_0x102db5510/0/4 .functor XOR 1, L_0x748ac32260, L_0x748ac32300, L_0x748ac323a0, L_0x748ac32440;
+L_0x102db5510 .functor XOR 1, L_0x102db5510/0/0, L_0x102db5510/0/4, C4<0>, C4<0>;
+v0x748b01c000_0 .net *"_ivl_0", 0 0, L_0x102da85b0;  1 drivers
+v0x748b01c0a0_0 .net *"_ivl_11", 0 0, L_0x748ac31360;  1 drivers
+v0x748b01c140_0 .net *"_ivl_13", 0 0, L_0x748ac31400;  1 drivers
+v0x748b01c1e0_0 .net *"_ivl_15", 0 0, L_0x748ac314a0;  1 drivers
+v0x748b01c280_0 .net *"_ivl_17", 0 0, L_0x748ac31540;  1 drivers
+v0x748b01c320_0 .net *"_ivl_18", 0 0, L_0x102db5210;  1 drivers
+v0x748b01c3c0_0 .net *"_ivl_21", 0 0, L_0x748ac315e0;  1 drivers
+v0x748b01c460_0 .net *"_ivl_23", 0 0, L_0x748ac31680;  1 drivers
+v0x748b01c500_0 .net *"_ivl_25", 0 0, L_0x748ac31720;  1 drivers
+v0x748b01c5a0_0 .net *"_ivl_27", 0 0, L_0x748ac317c0;  1 drivers
+v0x748b01c640_0 .net *"_ivl_29", 0 0, L_0x748ac31860;  1 drivers
+v0x748b01c6e0_0 .net *"_ivl_3", 0 0, L_0x748ac310e0;  1 drivers
+v0x748b01c780_0 .net *"_ivl_31", 0 0, L_0x748ac31900;  1 drivers
+v0x748b01c820_0 .net *"_ivl_33", 0 0, L_0x748ac319a0;  1 drivers
+v0x748b01c8c0_0 .net *"_ivl_35", 0 0, L_0x748ac31a40;  1 drivers
+v0x748b01c960_0 .net *"_ivl_36", 0 0, L_0x102db5610;  1 drivers
+v0x748b01ca00_0 .net *"_ivl_39", 0 0, L_0x748ac31ae0;  1 drivers
+v0x748b01caa0_0 .net *"_ivl_41", 0 0, L_0x748ac31b80;  1 drivers
+v0x748b01cb40_0 .net *"_ivl_43", 0 0, L_0x748ac31c20;  1 drivers
+v0x748b01cbe0_0 .net *"_ivl_45", 0 0, L_0x748ac31cc0;  1 drivers
+v0x748b01cc80_0 .net *"_ivl_47", 0 0, L_0x748ac31d60;  1 drivers
+v0x748b01cd20_0 .net *"_ivl_49", 0 0, L_0x748ac31e00;  1 drivers
+v0x748b01cdc0_0 .net *"_ivl_5", 0 0, L_0x748ac31180;  1 drivers
+v0x748b01ce60_0 .net *"_ivl_51", 0 0, L_0x748ac31ea0;  1 drivers
+v0x748b01cf00_0 .net *"_ivl_53", 0 0, L_0x748ac31f40;  1 drivers
+v0x748b01cfa0_0 .net *"_ivl_54", 0 0, L_0x102db5510;  1 drivers
+v0x748b01d040_0 .net *"_ivl_58", 0 0, L_0x748ac31fe0;  1 drivers
+v0x748b01d0e0_0 .net *"_ivl_60", 0 0, L_0x748ac32080;  1 drivers
+v0x748b01d180_0 .net *"_ivl_62", 0 0, L_0x748ac32120;  1 drivers
+v0x748b01d220_0 .net *"_ivl_64", 0 0, L_0x748ac321c0;  1 drivers
+v0x748b01d2c0_0 .net *"_ivl_66", 0 0, L_0x748ac32260;  1 drivers
+v0x748b01d360_0 .net *"_ivl_68", 0 0, L_0x748ac32300;  1 drivers
+v0x748b01d400_0 .net *"_ivl_7", 0 0, L_0x748ac31220;  1 drivers
+v0x748b01d4a0_0 .net *"_ivl_70", 0 0, L_0x748ac323a0;  1 drivers
+v0x748b01d540_0 .net *"_ivl_72", 0 0, L_0x748ac32440;  1 drivers
+L_0x748bc34010 .functor BUFT 1, C4<0000>, C4<0>, C4<0>, C4<0>;
+v0x748b01d5e0_0 .net/2u *"_ivl_73", 3 0, L_0x748bc34010;  1 drivers
+v0x748b01d680_0 .net *"_ivl_75", 0 0, L_0x102db5930;  1 drivers
+L_0x748bc34058 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x748b01d720_0 .net/2u *"_ivl_77", 0 0, L_0x748bc34058;  1 drivers
+L_0x748bc340a0 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v0x748b01d7c0_0 .net/2u *"_ivl_79", 0 0, L_0x748bc340a0;  1 drivers
+L_0x748bc340e8 .functor BUFT 1, C4<0000>, C4<0>, C4<0>, C4<0>;
+v0x748b01d860_0 .net/2u *"_ivl_83", 3 0, L_0x748bc340e8;  1 drivers
+v0x748b01d900_0 .net *"_ivl_85", 0 0, L_0x102db5680;  1 drivers
+L_0x748bc34130 .functor BUFT 1, C4<0000000000000000>, C4<0>, C4<0>, C4<0>;
+v0x748b01d9a0_0 .net/2u *"_ivl_87", 15 0, L_0x748bc34130;  1 drivers
+L_0x748bc34178 .functor BUFT 1, C4<0000000000000001>, C4<0>, C4<0>, C4<0>;
+v0x748b01da40_0 .net/2u *"_ivl_89", 15 0, L_0x748bc34178;  1 drivers
+v0x748b01dae0_0 .net *"_ivl_9", 0 0, L_0x748ac312c0;  1 drivers
+v0x748b01db80_0 .net *"_ivl_91", 15 0, L_0x102db5720;  1 drivers
+v0x748b01dc20_0 .net "input_bits", 14 0, v0x748b01dea0_0;  1 drivers
+v0x748b01dcc0_0 .net "is_error", 0 0, L_0x748b01e120;  alias, 1 drivers
+v0x748b01dd60_0 .net "led", 15 0, L_0x748b01e1c0;  alias, 1 drivers
+v0x748b01de00_0 .net "syndrome", 3 0, L_0x748b01e080;  1 drivers
+L_0x748ac310e0 .part v0x748b01dea0_0, 0, 1;
+L_0x748ac31180 .part v0x748b01dea0_0, 2, 1;
+L_0x748ac31220 .part v0x748b01dea0_0, 4, 1;
+L_0x748ac312c0 .part v0x748b01dea0_0, 6, 1;
+L_0x748ac31360 .part v0x748b01dea0_0, 8, 1;
+L_0x748ac31400 .part v0x748b01dea0_0, 10, 1;
+L_0x748ac314a0 .part v0x748b01dea0_0, 12, 1;
+L_0x748ac31540 .part v0x748b01dea0_0, 14, 1;
+L_0x748ac315e0 .part v0x748b01dea0_0, 1, 1;
+L_0x748ac31680 .part v0x748b01dea0_0, 2, 1;
+L_0x748ac31720 .part v0x748b01dea0_0, 5, 1;
+L_0x748ac317c0 .part v0x748b01dea0_0, 6, 1;
+L_0x748ac31860 .part v0x748b01dea0_0, 9, 1;
+L_0x748ac31900 .part v0x748b01dea0_0, 10, 1;
+L_0x748ac319a0 .part v0x748b01dea0_0, 13, 1;
+L_0x748ac31a40 .part v0x748b01dea0_0, 14, 1;
+L_0x748ac31ae0 .part v0x748b01dea0_0, 3, 1;
+L_0x748ac31b80 .part v0x748b01dea0_0, 4, 1;
+L_0x748ac31c20 .part v0x748b01dea0_0, 5, 1;
+L_0x748ac31cc0 .part v0x748b01dea0_0, 6, 1;
+L_0x748ac31d60 .part v0x748b01dea0_0, 11, 1;
+L_0x748ac31e00 .part v0x748b01dea0_0, 12, 1;
+L_0x748ac31ea0 .part v0x748b01dea0_0, 13, 1;
+L_0x748ac31f40 .part v0x748b01dea0_0, 14, 1;
+L_0x748b01e080 .concat8 [ 1 1 1 1], L_0x102da85b0, L_0x102db5210, L_0x102db5610, L_0x102db5510;
+L_0x748ac31fe0 .part v0x748b01dea0_0, 7, 1;
+L_0x748ac32080 .part v0x748b01dea0_0, 8, 1;
+L_0x748ac32120 .part v0x748b01dea0_0, 9, 1;
+L_0x748ac321c0 .part v0x748b01dea0_0, 10, 1;
+L_0x748ac32260 .part v0x748b01dea0_0, 11, 1;
+L_0x748ac32300 .part v0x748b01dea0_0, 12, 1;
+L_0x748ac323a0 .part v0x748b01dea0_0, 13, 1;
+L_0x748ac32440 .part v0x748b01dea0_0, 14, 1;
+L_0x102db5930 .cmp/eq 4, L_0x748b01e080, L_0x748bc34010;
+L_0x748b01e120 .functor MUXZ 1, L_0x748bc340a0, L_0x748bc34058, L_0x102db5930, C4<>;
+L_0x102db5680 .cmp/eq 4, L_0x748b01e080, L_0x748bc340e8;
+L_0x102db5720 .shift/l 16, L_0x748bc34178, L_0x748b01e080;
+L_0x748b01e1c0 .functor MUXZ 16, L_0x102db5720, L_0x748bc34130, L_0x102db5680, C4<>;
+    .scope S_0x102da8430;
+T_1 ;
+    %vpi_call/w 3 35 "$display", "Testing valid codewords and all single-bit error positions" {0 0 0};
+    %pushi/vec4 32767, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 1, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32766, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 2, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32765, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 3, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32763, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 4, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32759, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 5, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32751, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 6, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32735, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 7, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32703, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 8, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32639, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 9, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32511, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 9, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 10, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 32255, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 10, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 11, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 31743, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 11, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 12, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 30719, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 12, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 13, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 28671, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 13, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 14, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 24575, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 14, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 15, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 16383, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 15, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 16, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %pushi/vec4 0, 0, 15;
+    %store/vec4 v0x102dad890_0, 0, 15;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x102db4fa0_0, 0, 4;
+    %pushi/vec4 17, 0, 32;
+    %store/vec4 v0x102dad930_0, 0, 32;
+    %fork TD_hamming1511_tb.check_case, S_0x102dad710;
+    %join;
+    %vpi_call/w 3 55 "$display", "PASS: all 17 test cases passed" {0 0 0};
+    %vpi_call/w 3 56 "$finish" {0 0 0};
+    %end;
+    .thread T_1;
+    .scope S_0x102da8430;
+T_2 ;
+    %vpi_call/w 3 60 "$dumpfile", "out.vcd" {0 0 0};
+    %vpi_call/w 3 61 "$dumpvars", 32'sb00000000000000000000000000000001, S_0x102da8430 {0 0 0};
+    %end;
+    .thread T_2;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    "-";
+    "testbench/ham_tb.v";
+    "main.v";
