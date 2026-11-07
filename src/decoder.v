@@ -16,6 +16,7 @@ module hamming1511 (
     // This bit shows if there is an error
     assign is_error = (syndrome == 4'b0) ? 1'b0 : 1'b1;
     
+     
     // Error position - Take the syndrome bits and dump them into a 1 hot 16 bit value
     // if the syndrome is 0, set all 16 bits to 0, otherwise
     assign led = (syndrome == 4'b0) ? 16'b0 : 16'b1 << syndrome; // Create a 16 bit value to store the number 1. Then left shift that bit "syndrome number of times"
