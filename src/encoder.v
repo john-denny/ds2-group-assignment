@@ -18,4 +18,7 @@ module secded16_encoder (
 
     assign codeword[15] = ^codeword[14:0];
     assign led = codeword;
+    
+    // To ensure that the user hasn't put anything in the last 4 bits
+    assign is_error = (input_bits[15:12] !== 4'b0) ? 1'b1 : 1'b0;
 endmodule

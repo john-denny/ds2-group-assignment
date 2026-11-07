@@ -1,5 +1,3 @@
-
-
 module secded16_decoder (
     input wire [15:0] input_bits,
     output wire [15:0] led,
