@@ -40,6 +40,11 @@ The codebase's current functionality is just a hamming decoder. We'll need to ad
 - Single bit errors cause an LED to be lit
 - Double bit errors cause a 7 seg display.
 
+
 ### Nice to Haves
 - Text on 7 seg explaining where the dead bit is
 - Text explaining if there's a double bit error.
+- Text on 7 seg explaining whether we're in Encode or decode (Mode 1 or 2)
+--- 
+## Implementation of the states
+Looking at it, it seems it'll be easier to just implement the encoder and decoder to run all the time, then have a block that's running in parallel which switches whether it's in encode or decode.
