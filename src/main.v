@@ -4,7 +4,11 @@ module main(
     input wire rst,
     input wire mode_button,
     input wire [15:0] input_bits, // Read-only for modules, only changed by the device
-    output wire [15:0] device_led // The actual device leds
+    output wire [15:0] device_led, // The actual device leds
+
+    output wire [6:0] segments,
+    output wire [3:0] enable,
+    output wire dp
     );
     
     // Register to track whether the chip is in decode (0) or encode (1)
@@ -21,4 +25,11 @@ module main(
     secded16_encoder encoder(input_bits, encode_leds, encode_error);
 
     assign device_led = mode ? encode_leds : decode_leds;
+
+    //Basys-3 enable is active-low
+    assign enable[3] = 4'b0111; //enable leftmost
+    assign dp = 1'b1; //turn decimal point off
+    assign seg = mode ? 7'b0000110 : 7'b0100001 // mode = 1 (Encoder); 0 (Decoder)
+    //bit-order: g f e d c b a
+    
 endmodule
