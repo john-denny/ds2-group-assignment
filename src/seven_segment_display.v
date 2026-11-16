@@ -2,7 +2,7 @@ module seven_segment_display(
   input wire clk,
   input wire rst,
   input wire mode,
-  input wire_error present,
+  input wire error_present,
   output reg [6:0] segments,
   output reg [3:0] enable,
   output wire decimal
@@ -20,10 +20,10 @@ module seven_segment_display(
         refresh_counter <= 16'd0;
         digit <= 2'd0;
       end
-    else if refresh_counter == 16'd65535
+    else if (refresh_counter == 16'd65535)
       begin
         //after 0.655 ms, select digit
-        refrsh_counter <= 16'd0;
+        refresh_counter <= 16'd0;
         digit <= digit + 2'd1;
       end
     else
@@ -50,7 +50,7 @@ module seven_segment_display(
             if(error_present)
               segments = mode ? 7'b1000000 : 7'b0000110;
             else
-              segments = 7'b1111111 //blank for no error
+              segments = 7'b1111111; //blank for no error
           end
 
         2'd1:
@@ -60,7 +60,7 @@ module seven_segment_display(
             if(error_present)
               segments = mode ? 7'b1111001 : 7'b0100100;
             else
-              segments = 7'b1111111 //blank for no error
+              segments = 7'b1111111; //blank for no error
           end
 
         2'd2:
@@ -68,12 +68,12 @@ module seven_segment_display(
             //third from rightmost; left blank
             enable = 4'b1011;
             segments = 7'b1111111;
-
+          end
         2'd3:
           begin
             //leftmost; E for encoder, d for decoder
             enable = 4'b0111;
-            segments = mode ? 7'b0000110 : 7'0100001;
+            segments = mode ? 7'b0000110 : 7'b0100001;
           end
       endcase
     end
