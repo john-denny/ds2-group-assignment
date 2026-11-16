@@ -4,7 +4,11 @@ module main(
     input wire rst,
     input wire mode_button,
     input wire [15:0] input_bits, // Read-only for modules, only changed by the device
-    output wire [15:0] device_led // The actual device leds
+    output wire [15:0] device_led, // The actual device leds
+
+    output wire [6:0] segments,
+    output wire [3:0] enable,
+    output wire decimal
     );
     
     // Register to track whether the chip is in decode (0) or encode (1)
@@ -21,4 +25,15 @@ module main(
     secded16_encoder encoder(input_bits, encode_leds, encode_error);
 
     assign device_led = mode ? encode_leds : decode_leds;
+
+    seven_segment_display display_instance(
+        .clk (clk),
+        .rst (rst),
+        .mode (mode),
+        .error_present (mode ? encode_error: decode_error),
+        .segments (segments),
+        .enable (enable),
+        .decimal (decimal)
+    );
+    
 endmodule
