@@ -48,3 +48,7 @@ The codebase's current functionality is just a hamming decoder. We'll need to ad
 --- 
 ## Implementation of the states
 Looking at it, it seems it'll be easier to just implement the encoder and decoder to run all the time, then have a block that's running in parallel which switches whether it's in encode or decode.
+
+---
+## Implementation of the testbench
+I want to implement 3 testbenches, an encoder, decoder and a main (integration) testbench
