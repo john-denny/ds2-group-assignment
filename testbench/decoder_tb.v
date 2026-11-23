@@ -16,7 +16,12 @@ module decoder_tb();
 
         begin
             input_bits = candidate;
-            expected_led = (expected_syndrome == 4'b0) ? 16'b0 : (16'b1 << expected_syndrome);
+            if (expected_error)
+                expected_led = 16'b0;
+            else if (expected_syndrome == 4'b0)
+                expected_led = ((^candidate[14:0]) !== candidate[15]) ? 16'h8000 : 16'b0;
+            else
+                expected_led = 16'b1 << (expected_syndrome - 4'd1);
             #2;
 
             if (dut.syndrome !== expected_syndrome)

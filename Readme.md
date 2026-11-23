@@ -51,4 +51,5 @@ I use `iverilog` and `vvp` to run and validate the code using the testbench.
 iverilog -g2012  testbench/ham_tb.v src/main.v && vvp a.out
 ```
 
-The XDC is untested as of yet, will run it on an FPGA when I get a chance.
+## Build
+`LOC` is used as opposed to `PACKAGE_PIN` for the `.xdc` for NEXTPNR as opposed to `PACKAGE_PIN` for Vivado
