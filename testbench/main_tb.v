@@ -7,8 +7,20 @@ module main_tb();
     reg mode_button;
     reg [15:0] input_bits;
     wire [15:0] device_led;
+    wire [6:0] segments;
+    wire [3:0] enable;
+    wire decimal;
 
-    main dut(clk, rst, mode_button, input_bits, device_led);
+    main #(.BUTTON_DEBOUNCE_CYCLES(4)) dut(
+        .clk(clk),
+        .rst(rst),
+        .mode_button(mode_button),
+        .input_bits(input_bits),
+        .device_led(device_led),
+        .segments(segments),
+        .enable(enable),
+        .decimal(decimal)
+    );
 
     // Generate a clock with a 10ns period.
     always #5 clk = ~clk;
@@ -34,13 +46,33 @@ module main_tb();
         end
     endtask
 
-    // Press the mode button for one clock cycle.
+    // Hold long enough to pass the small simulation debounce interval.
     task toggle_mode;
+        input integer hold_cycles;
+        integer i;
         begin
+            @(negedge clk);
+            mode_button = 1'b1;
+            for (i = 0; i < hold_cycles; i = i + 1)
+                @(negedge clk);
+            mode_button = 1'b0;
+            repeat (6) @(negedge clk);
+            #2;
+        end
+    endtask
+
+    task bounce_mode_button;
+        begin
+            // Short pulses must be rejected by the debounce filter.
             @(negedge clk);
             mode_button = 1'b1;
             @(negedge clk);
             mode_button = 1'b0;
+            repeat (3) @(negedge clk);
+            mode_button = 1'b1;
+            @(negedge clk);
+            mode_button = 1'b0;
+            repeat (5) @(negedge clk);
             #2;
         end
     endtask
@@ -59,11 +91,16 @@ module main_tb();
         #2;
 
         check_case(16'h0000, 1'b0, 16'h0000, 1);
-        check_case(16'hfffe, 1'b0, 16'h0002, 2);
-        check_case(16'hfffc, 1'b0, 16'h0008, 3);
+        // Syndrome 1 maps to LED 0; syndrome 3 maps to LED 2.
+        check_case(16'hfffe, 1'b0, 16'h0001, 2);
+        check_case(16'hfffc, 1'b0, 16'h0000, 3);
+        check_case(16'hfffb, 1'b0, 16'h0004, 14);
+
+        bounce_mode_button();
+        check_case(16'h0000, 1'b0, 16'h0000, 13);
 
         // Switch into encoder mode.
-        toggle_mode();
+        toggle_mode(8);
 
         check_case(16'h0000, 1'b1, 16'h0000, 4);
         check_case(16'h0001, 1'b1, 16'h8007, 5);
@@ -74,13 +111,13 @@ module main_tb();
         check_case(16'h0004, 1'b1, 16'h802a, 8);
 
         // Switch back into decoder mode.
-        toggle_mode();
+        toggle_mode(8);
 
         check_case(16'h0000, 1'b0, 16'h0000, 9);
-        check_case(16'hfffd, 1'b0, 16'h0004, 10);
+        check_case(16'hfffd, 1'b0, 16'h0002, 10);
 
         // Reset while in encoder mode.
-        toggle_mode();
+        toggle_mode(8);
         check_case(16'h0001, 1'b1, 16'h8007, 11);
 
         @(negedge clk);
@@ -91,7 +128,7 @@ module main_tb();
 
         check_case(16'h0000, 1'b0, 16'h0000, 12);
 
-        $display("PASS: all 12 main module test cases passed");
+        $display("PASS: all 14 main module test cases and debounce checks passed");
         $finish;
     end
 
