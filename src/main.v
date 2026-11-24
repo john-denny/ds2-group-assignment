@@ -1,5 +1,6 @@
 module main #(
-    parameter BUTTON_DEBOUNCE_CYCLES = 1_000_000
+    parameter BUTTON_DEBOUNCE_CYCLES = 1_000_000,
+    parameter DISPLAY_REFRESH_CYCLES = 65_536
 )(
     // Defined in the xdc
     input wire clk,
@@ -29,7 +30,7 @@ module main #(
 
     assign device_led = mode ? encode_leds : decode_leds;
 
-    seven_segment_display display_instance(
+    seven_segment_display #(.REFRESH_CYCLES(DISPLAY_REFRESH_CYCLES)) display_instance(
         .clk (clk),
         .rst (rst),
         .mode (mode),
