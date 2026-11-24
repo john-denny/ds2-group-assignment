@@ -1,4 +1,7 @@
-module main(
+module main #(
+    parameter BUTTON_DEBOUNCE_CYCLES = 1_000_000,
+    parameter DISPLAY_REFRESH_CYCLES = 65_536
+)(
     // Defined in the xdc
     input wire clk,
     input wire rst,
@@ -13,7 +16,8 @@ module main(
     
     // Register to track whether the chip is in decode (0) or encode (1)
     reg mode;
-    mode_toggle mode_switcher(clk, rst, mode_button, mode);
+    mode_toggle #(.DEBOUNCE_CYCLES(BUTTON_DEBOUNCE_CYCLES))
+        mode_switcher(clk, rst, mode_button, mode);
     
     // Individual led and error bit values for encoder and decoder
     wire [15:0] encode_leds; 
@@ -26,7 +30,7 @@ module main(
 
     assign device_led = mode ? encode_leds : decode_leds;
 
-    seven_segment_display display_instance(
+    seven_segment_display #(.REFRESH_CYCLES(DISPLAY_REFRESH_CYCLES)) display_instance(
         .clk (clk),
         .rst (rst),
         .mode (mode),

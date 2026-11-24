@@ -1,4 +1,6 @@
-module seven_segment_display(
+module seven_segment_display #(
+  parameter REFRESH_CYCLES = 65_536
+)(
   input wire clk,
   input wire rst,
   input wire mode,
@@ -9,7 +11,9 @@ module seven_segment_display(
 );
 
   //counter to switch through each segment (as if all at the same time)
-  reg [15:0] refresh_counter;
+  localparam COUNTER_WIDTH = (REFRESH_CYCLES <= 1) ? 1 : $clog2(REFRESH_CYCLES);
+
+  reg [COUNTER_WIDTH-1:0] refresh_counter;
   reg [1:0] digit;
 
   //At 100 MHz, each clock cycle is 10 ns
@@ -17,18 +21,18 @@ module seven_segment_display(
   always @(posedge clk) begin
     if(rst)
       begin
-        refresh_counter <= 16'd0;
+        refresh_counter <= {COUNTER_WIDTH{1'b0}};
         digit <= 2'd0;
       end
-    else if (refresh_counter == 16'd65535)
+    else if (refresh_counter == REFRESH_CYCLES - 1)
       begin
-        //after 0.655 ms, select digit
-        refresh_counter <= 16'd0;
+        // At 100 MHz, the default 65,536 cycles take about 0.655 ms.
+        refresh_counter <= {COUNTER_WIDTH{1'b0}};
         digit <= digit + 2'd1;
       end
     else
       begin
-        refresh_counter <= refresh_counter + 16'd1;
+        refresh_counter <= refresh_counter + 1'b1;
       end
   end
 
