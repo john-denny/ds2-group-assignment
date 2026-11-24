@@ -14,6 +14,17 @@ This design encodes 11 data bits into a 16-bit SECDED codeword: a 15-bit Hamming
 
 The Basys 3 pin assignments are in [`src/constraints/ham-basys3.xdc`](src/constraints/ham-basys3.xdc). The seven-segment display is multiplexed. `main_tb` uses a shortened refresh interval to check all four digit selects and the displayed patterns. See [`testbench/decoder_on_device.md`](testbench/decoder_on_device.md) for decoder cases to check on the board.
 
+## Building for the Basys 3
+
+From the repository root, combine the Verilog sources and invoke `srinny` with the Basys 3 constraints:
+
+```sh
+{ for f in src/main.v src/decoder.v src/encoder.v src/mode.v src/seven_segment_display.v; do cat "$f"; printf '\n'; done; } > /tmp/ds2-main.v
+srinny /tmp/ds2-main.v --top main --xdc "$PWD/src/constraints/ham-basys3.xdc"
+```
+
+This is the command used by [`src/scripts/program_basys3.sh`](src/scripts/program_basys3.sh).
+
 ## SECDED error cases
 
 The four Hamming parity checks form a syndrome for codeword bits 0–14. The overall parity check covers all 16 bits. Together they distinguish these cases:
