@@ -23,4 +23,9 @@ for testbench in "${testbenches[@]}"; do
     (cd "$build_dir" && vvp "$output")
 done
 
+if [[ -f "$build_dir/out.vcd" ]]; then
+    cp "$build_dir/out.vcd" "$repo_root/out.vcd"
+    echo "Saved decoder waveform to $repo_root/out.vcd"
+fi
+
 echo "All test benches passed."

@@ -3,8 +3,10 @@ module decoder_tb();
     reg [15:0] input_bits;
     wire [15:0] led;
     wire is_error;
+    wire [3:0] syndrome;
 
     secded16_decoder dut(input_bits, led, is_error);
+    assign syndrome = dut.syndrome;
 
     // Check the decoder syndrome, error flag, and one-hot LED output.
     task check_case;
@@ -24,9 +26,9 @@ module decoder_tb();
                 expected_led = 16'b1 << (expected_syndrome - 4'd1);
             #2;
 
-            if (dut.syndrome !== expected_syndrome)
+            if (syndrome !== expected_syndrome)
                 $fatal(1, "Case %0d: input=%b syndrome=%b expected=%b",
-                       case_number, candidate, dut.syndrome, expected_syndrome);
+                       case_number, candidate, syndrome, expected_syndrome);
             if (is_error !== expected_error)
                 $fatal(1, "Case %0d: input=%b is_error=%b expected=%b",
                        case_number, candidate, is_error, expected_error);
